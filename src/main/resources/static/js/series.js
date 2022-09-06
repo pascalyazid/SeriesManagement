@@ -165,7 +165,7 @@ function loadSeriesForm() {
     pathContainer.appendChild(path);
 
     $("#submit").on('click', function () {
-        const data = $("#serieForm").serialize();
+        const data = $("#seriesForm").serialize();
         console.log(data);
 
         fetch('/SeriesManagement/series', {

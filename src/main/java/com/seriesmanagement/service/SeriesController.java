@@ -53,16 +53,15 @@ public class SeriesController {
             @Valid @BeanParam Series series) throws IOException {
 
         if (UserData.allowedUser(userUUID, 1)) {
-            if(DataHandler.addSeries(series)) {
+            if (DataHandler.addSeries(series)) {
                 return ResponseEntity.status(HttpStatus.OK).body("Series created");
-            }
-            else {
+            } else {
                 return ResponseEntity.status(HttpStatus.CONFLICT).body("Could not create Series");
             }
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Insufficient Permissions");
         }
-}
+    }
 
     @RequestMapping(value = "/series", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public @ResponseBody ResponseEntity update(
@@ -72,14 +71,32 @@ public class SeriesController {
 
         if (UserData.allowedUser(userUUID, 1)) {
             List<Series> seriesList = DataHandler.readSeries();
-            if(DataHandler.existSeries(uuid)) {
+            if (DataHandler.existSeries(uuid)) {
                 seriesList.set(seriesList.indexOf(DataHandler.getSeries(uuid)), series);
                 return ResponseEntity.status(HttpStatus.OK).body("Series " + uuid + " was updated");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Series " + uuid + " not found");
             }
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Insufficient Permissions");
         }
     }
 
+
+    @RequestMapping(value = "/series", method = RequestMethod.DELETE)
+    public @ResponseBody ResponseEntity delete(
+            @CookieValue("userUUID") String userUUID,
+            @QueryParam("uui") String uuid) throws IOException {
+
+        if (UserData.allowedUser(userUUID, 1)) {
+            if (DataHandler.removeSeries(uuid)) {
+                return ResponseEntity.status(HttpStatus.OK).body("Series " + uuid + " deleted");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Series " + uuid + " not found");
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Insufficient Permissions");
+        }
+    }
 
 }

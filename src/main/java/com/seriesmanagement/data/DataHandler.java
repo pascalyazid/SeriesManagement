@@ -113,15 +113,15 @@ public class DataHandler {
      *
      * @param seriesUUID
      */
-    public static int removeSeries(String seriesUUID) {
+    public static boolean removeSeries(String seriesUUID) {
         List<Series> seriesList = readSeries();
 
         if(seriesList.removeIf(series1 -> series1.getSeriesUUID().contains(seriesUUID))) {
             saveSeries(seriesList);
-            return 200;
+            return true;
         }
         else {
-            return 404;
+            return false;
         }
     }
 
@@ -135,6 +135,11 @@ public class DataHandler {
         return readSeries().stream().filter(series -> series.getSeriesUUID().equals(seriesUUD)).findFirst().orElse(null);
     }
 
+    /**
+     * Check if a seris exists
+     * @param seriesUUID
+     * @return
+     */
     public static boolean existSeries(String seriesUUID) {
         return readSeries().stream().anyMatch(series -> series.getSeriesUUID().equals(seriesUUID));
     }
@@ -156,7 +161,7 @@ public class DataHandler {
      * Reads all Categories
      */
     public static List<Category> readCategories() {
-        List<Category> categoryList = null;
+        List<Category> categoryList = new ArrayList<>();
         try {
 
             URL url = new URL("https://api.npoint.io/8b9137047c49d18ef89e");
@@ -218,25 +223,38 @@ public class DataHandler {
      *
      * @param Category
      */
-    public static void addCategory(Category Category) {
+    public static boolean newCategory(Category Category) {
         List<Category> categoryList = readCategories();
-        categoryList.add(Category);
-        saveCategories(categoryList);
+        if(!categoryList.contains(categoryList)) {
+            categoryList.add(Category);
+            saveCategories(categoryList);
+            return true;
+        }
+        return false;
     }
 
+
+    /**
+     * Check if a Category exists
+     * @param categoryUUID
+     * @return
+     */
+    public static boolean existCategory(String categoryUUID) {
+        return readCategories().stream().anyMatch(category -> category.getCatUUID().equals(categoryUUID));
+    }
     /**
      * remove a Category
      *
      * @param catUUID
      */
 
-    public static int removeCategory(String catUUID) {
+    public static boolean removeCategory(String catUUID) {
         List<Category> categoryList = readCategories();
         if(categoryList.removeIf(Category -> Category.getCatUUID().contains(catUUID))){
             saveCategories(categoryList);
-            return 200;
+            return true;
         } else {
-            return 404;
+            return false;
         }
     }
 
@@ -258,7 +276,7 @@ public class DataHandler {
      */
 
     public static List<Episode> readEpisodes() {
-        List<Episode> episodeList = null;
+        List<Episode> episodeList = new ArrayList<>();
         try {
 
             URL url = new URL("https://api.npoint.io/0100b0063de742dc840b");
@@ -334,10 +352,25 @@ public class DataHandler {
      *
      * @param episode
      */
-    public static void newEpisode(Episode episode) {
+    public static boolean newEpisode(Episode episode) {
         List<Episode> episodeList = readEpisodes();
-        episodeList.add(episode);
-        saveEpisodes(episodeList);
+        if(!episodeList.contains(episode)) {
+            episodeList.add(episode);
+            saveEpisodes(episodeList);
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    /**
+     * Check if an Episode exists
+     * @param episodeUUID
+     * @return
+     */
+    public static boolean existEpisode(String episodeUUID) {
+        return readEpisodes().stream().anyMatch(episode -> episode.getEpisodeUUID().equals(episodeUUID));
     }
 
     /**
@@ -345,14 +378,14 @@ public class DataHandler {
      *
      * @param episodeUUID
      */
-    public static int removeEpisode(String episodeUUID) {
+    public static boolean removeEpisode(String episodeUUID) {
         List<Episode> episodeList = readEpisodes();
         if(episodeList.removeIf(folge -> folge.getEpisodeUUID().contains(episodeUUID))){
             saveEpisodes(episodeList);
-            return 200;
+            return true;
         }
         else {
-            return 404;
+            return false;
         }
     }
     
