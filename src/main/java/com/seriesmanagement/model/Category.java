@@ -1,5 +1,7 @@
 package com.seriesmanagement.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
@@ -7,6 +9,7 @@ import javax.ws.rs.FormParam;
 import java.lang.reflect.Method;
 import java.util.UUID;
 
+@Entity
 public class Category {
     @FormParam("title")
     @NotEmpty
@@ -14,6 +17,7 @@ public class Category {
     @Max(500)
     private String title;
 
+    @Id
     private String catUUID;
 
 

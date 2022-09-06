@@ -10,13 +10,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.ws.rs.BeanParam;
-import javax.ws.rs.CookieParam;
+
 import javax.ws.rs.QueryParam;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-
-import static org.springframework.http.ResponseEntity.status;
 
 @RestController
 public class SeriesController {
@@ -25,7 +22,8 @@ public class SeriesController {
     }
 
     @RequestMapping(value = "/series", method = RequestMethod.GET)
-    public @ResponseBody ResponseEntity list(@CookieValue("userUUID") String userUUID) throws IOException {
+    public @ResponseBody ResponseEntity list(
+            @CookieValue(value = "userUUID", defaultValue = "userUUID") String userUUID) throws IOException {
         if (UserData.allowedUser(userUUID, 0)) {
             return new ResponseEntity<>(DataHandler.readSeries(), HttpStatus.OK);
         } else {
@@ -35,7 +33,9 @@ public class SeriesController {
     }
 
     @RequestMapping(value = "/series/get", method = RequestMethod.GET)
-    public @ResponseBody ResponseEntity get(@QueryParam("uuid") String uuid, @CookieValue("userUUID") String userUUID) throws IOException {
+    public @ResponseBody ResponseEntity get(
+            @QueryParam("uuid") String uuid,
+            @CookieValue(value = "userUUID", defaultValue = "userUUID") String userUUID)throws IOException {
         if (UserData.allowedUser(userUUID, 0)) {
             if (DataHandler.existSeries(uuid)) {
                 return new ResponseEntity<>(DataHandler.getSeries(uuid), HttpStatus.OK);
@@ -49,7 +49,7 @@ public class SeriesController {
 
     @RequestMapping(value = "/series", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public @ResponseBody ResponseEntity create(
-            @CookieValue("userUUID") String userUUID,
+            @CookieValue(value = "userUUID", defaultValue = "userUUID") String userUUID,
             @Valid @BeanParam Series series) throws IOException {
 
         if (UserData.allowedUser(userUUID, 1)) {
@@ -65,7 +65,7 @@ public class SeriesController {
 
     @RequestMapping(value = "/series", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public @ResponseBody ResponseEntity update(
-            @CookieValue("userUUID") String userUUID,
+            @CookieValue(value = "userUUID", defaultValue = "userUUID") String userUUID,
             @Valid @BeanParam Series series,
             @QueryParam("uuid") String uuid) throws IOException {
 
@@ -85,8 +85,8 @@ public class SeriesController {
 
     @RequestMapping(value = "/series", method = RequestMethod.DELETE)
     public @ResponseBody ResponseEntity delete(
-            @CookieValue("userUUID") String userUUID,
-            @QueryParam("uui") String uuid) throws IOException {
+            @CookieValue(value = "userUUID", defaultValue = "userUUID") String userUUID,
+            @QueryParam("uuid") String uuid) throws IOException {
 
         if (UserData.allowedUser(userUUID, 1)) {
             if (DataHandler.removeSeries(uuid)) {

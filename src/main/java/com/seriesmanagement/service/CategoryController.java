@@ -23,7 +23,9 @@ public class CategoryController {
     }
 
     @RequestMapping(value = "/category", method = RequestMethod.GET)
-    public @ResponseBody ResponseEntity list(@CookieValue("userUUID") String userUUID) throws IOException {
+    public @ResponseBody ResponseEntity list(
+            @CookieValue(value = "userUUID", defaultValue = "userUUID") String userUUID) throws IOException {
+
         if (UserData.allowedUser(userUUID, 0)) {
             return new ResponseEntity<>(DataHandler.readCategories(), HttpStatus.OK);
         } else {
@@ -33,7 +35,10 @@ public class CategoryController {
     }
 
     @RequestMapping(value = "/category/get", method = RequestMethod.GET)
-    public @ResponseBody ResponseEntity get(@QueryParam("uuid") String uuid, @CookieValue("userUUID") String userUUID) throws IOException {
+    public @ResponseBody ResponseEntity get(
+            @QueryParam("uuid") String uuid,
+            @CookieValue(value = "userUUID", defaultValue = "userUUID") String userUUID) throws IOException {
+
         if (UserData.allowedUser(userUUID, 0)) {
             if (DataHandler.existCategory(uuid)) {
                 return new ResponseEntity<>(DataHandler.getCategory(uuid), HttpStatus.OK);
@@ -47,14 +52,14 @@ public class CategoryController {
 
     @RequestMapping(value = "/category", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public @ResponseBody ResponseEntity create(
-            @CookieValue("userUUID") String userUUID,
+            @CookieValue(value = "userUUID", defaultValue = "userUUID") String userUUID,
             @Valid @BeanParam Category category) throws IOException {
 
         if (UserData.allowedUser(userUUID, 1)) {
             if (DataHandler.newCategory(category)) {
-                return ResponseEntity.status(HttpStatus.OK).body("Episode created");
+                return ResponseEntity.status(HttpStatus.OK).body("Category created");
             } else {
-                return ResponseEntity.status(HttpStatus.CONFLICT).body("Could not create Episode");
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("Could not create Category");
             }
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Insufficient Permissions");
@@ -63,14 +68,15 @@ public class CategoryController {
 
     @RequestMapping(value = "/category", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public @ResponseBody ResponseEntity update(
-            @CookieValue("userUUID") String userUUID,
+            @CookieValue(value = "userUUID", defaultValue = "userUUID") String userUUID,
             @Valid @BeanParam Category category,
             @QueryParam("uuid") String uuid) throws IOException {
 
         if (UserData.allowedUser(userUUID, 1)) {
-            List<Category> categoryList = DataHandler.readCategories();
             if (DataHandler.existCategory(uuid)) {
-                categoryList.set(categoryList.indexOf(DataHandler.getCategory(uuid)), category);
+                DataHandler.removeCategory(uuid);
+                category.setCatUUID(uuid);
+                DataHandler.newCategory(category);
                 return ResponseEntity.status(HttpStatus.OK).body("Category " + uuid + " was updated");
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Category " + uuid + " not found");
@@ -83,11 +89,11 @@ public class CategoryController {
 
     @RequestMapping(value = "/category", method = RequestMethod.DELETE)
     public @ResponseBody ResponseEntity delete(
-            @CookieValue("userUUID") String userUUID,
-            @QueryParam("uui") String uuid) throws IOException {
+            @CookieValue(value = "userUUID", defaultValue = "userUUID") String userUUID,
+            @QueryParam("uuid") String uuid) throws IOException {
 
         if (UserData.allowedUser(userUUID, 1)) {
-            if (DataHandler.removeEpisode(uuid)) {
+            if (DataHandler.removeCategory(uuid)) {
                 return ResponseEntity.status(HttpStatus.OK).body("Category " + uuid + " deleted");
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Category " + uuid + " not found");

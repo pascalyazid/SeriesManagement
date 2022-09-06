@@ -21,8 +21,8 @@ function loadNav() {
         "                  Kategorien\n" +
         "                </a>\n" +
         "                <ul class=\"dropdown-menu\" aria-labelledby=\"navbarDropdownMenuLink\">\n" +
-        "                  <li><a class=\"dropdown-item\" href=\"javascript:loadKategorieForm()\">Kategorie erstellen</a></li>\n" +
-        "                  <li><a class=\"dropdown-item\" href=\"javascript:listKategorien()\">Alle Kategorien</a></li>\n" +
+        "                  <li><a class=\"dropdown-item\" href=\"javascript:loadCategoryForm()\">Kategorie erstellen</a></li>\n" +
+        "                  <li><a class=\"dropdown-item\" href=\"javascript:listCategories()\">Alle Kategorien</a></li>\n" +
         "                </ul>\n" +
         "              </li>\n" +
         "              <li class=\"nav-item dropdown\">\n" +

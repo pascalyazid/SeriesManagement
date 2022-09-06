@@ -1,6 +1,9 @@
 package com.seriesmanagement.service;
 
+import com.seriesmanagement.SeriesManagementApplication;
+
 import javax.ws.rs.core.Application;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,6 +12,8 @@ import java.util.Properties;
 import java.util.Set;
 
 public class Config extends Application {
+
+    private static final String PROPERTIES_PATH = "/var/www/html/json/seriesmanagement.properties";
     private static Properties properties = null;
 
     /**
@@ -18,6 +23,7 @@ public class Config extends Application {
      */
     @Override
     public Set<Class<?>> getClasses() {
+
         HashSet providers = new HashSet<Class<?>>();
         providers.add(CategoryController.class);
         providers.add(SeriesController.class);
@@ -51,6 +57,7 @@ public class Config extends Application {
 
         InputStream inputStream = null;
         try {
+            inputStream = new FileInputStream(PROPERTIES_PATH);
             properties.load(inputStream);
         } catch (IOException e) {
             e.printStackTrace();

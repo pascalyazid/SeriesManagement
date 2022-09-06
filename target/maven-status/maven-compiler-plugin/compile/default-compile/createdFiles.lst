@@ -1,0 +1,15 @@
+com\seriesmanagement\service\Config.class
+com\seriesmanagement\model\Series.class
+com\seriesmanagement\data\DataHandler.class
+com\seriesmanagement\model\Episode.class
+com\seriesmanagement\service\CategoryController.class
+com\seriesmanagement\util\SeriesNotFoundException.class
+com\seriesmanagement\util\ImgURL.class
+com\seriesmanagement\util\ImgURLValidator.class
+com\seriesmanagement\data\UserData.class
+com\seriesmanagement\model\User.class
+com\seriesmanagement\service\SeriesController.class
+com\seriesmanagement\model\Category.class
+com\seriesmanagement\SeriesManagementApplication.class
+com\seriesmanagement\service\UserController.class
+com\seriesmanagement\service\EpisodeController.class
