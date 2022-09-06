@@ -13,7 +13,7 @@ import java.util.Set;
 
 public class Config extends Application {
 
-    private static final String PROPERTIES_PATH = "/var/www/html/json/seriesmanagement.properties";
+    private static final String PROPERTIES_PATH = "/var/www/html/json/seriesmanagement/seriesmanagement.properties";
     private static Properties properties = null;
 
     /**

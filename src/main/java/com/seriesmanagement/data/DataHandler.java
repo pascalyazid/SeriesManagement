@@ -1,14 +1,19 @@
 package com.seriesmanagement.data;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.seriesmanagement.model.Category;
 import com.seriesmanagement.model.Episode;
 import com.seriesmanagement.model.Series;
+import com.seriesmanagement.service.Config;
 
 import java.io.*;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,8 +25,7 @@ public class DataHandler {
      * Konstruktor für den Datahandler
      * um die Ressourcen zu erkennen
      */
-    private DataHandler() {
-    }
+    private DataHandler() {}
 
     /**
      * reads alle Series
@@ -33,16 +37,14 @@ public class DataHandler {
         List<Series> seriesList = new ArrayList<>();
         try {
 
-            URL url = new URL("https://api.npoint.io/ad1a415040f72663293f");
+            Type listType = new TypeToken<List<Series>>() {
+            }.getType();
 
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            InputStream fis = new FileInputStream(Config.getProperty("seriesJSON"));
+            InputStreamReader isr = new InputStreamReader(fis, StandardCharsets.UTF_8);
+            Reader reader = new BufferedReader(isr);
 
-            connection.setRequestProperty("accept", "application/json");
-
-            InputStream responseStream = connection.getInputStream();
-            ObjectMapper mapper = new ObjectMapper();
-            Series[] seriesList1 = mapper.readValue(responseStream, Series[].class);
-            seriesList.addAll(Arrays.asList(seriesList1));
+            seriesList = new Gson().fromJson(reader, listType);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -59,30 +61,12 @@ public class DataHandler {
     public static void saveSeries(List list) {
         try {
 
-            URL url = new URL ("https://api.npoint.io/ad1a415040f72663293f");
-            HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+                objectMapper.writeValue(new File(String.valueOf(Paths.get(Config.getProperty("seriesJSON")))), list);
 
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("Content-Type", "application/json; utf-8");
-            connection.setRequestProperty("Accept", "application/json");
-            connection.setDoOutput(true);
-
-            String jsonInputString = new ObjectMapper().writeValueAsString(list.toArray());
-            jsonInputString = "[" + jsonInputString.substring(1, jsonInputString.length() - 1) + "]";
-
-
-            try(OutputStream os = connection.getOutputStream()) {
-                byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
-                os.write(input);
-            }
-
-            try(BufferedReader br = new BufferedReader(
-                    new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
-                StringBuilder response = new StringBuilder();
-                String responseLine = null;
-                while ((responseLine = br.readLine()) != null) {
-                    response.append(responseLine.trim());
-                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
         } catch (Exception e) {
@@ -164,16 +148,15 @@ public class DataHandler {
         List<Category> categoryList = new ArrayList<>();
         try {
 
-            URL url = new URL("https://api.npoint.io/8b9137047c49d18ef89e");
+            Type listType = new TypeToken<List<Series>>() {
+            }.getType();
 
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            InputStream fis = new FileInputStream(Config.getProperty("categoryJSON"));
+            InputStreamReader isr = new InputStreamReader(fis, StandardCharsets.UTF_8);
+            Reader reader = new BufferedReader(isr);
 
-            connection.setRequestProperty("accept", "application/json");
+            categoryList = new Gson().fromJson(reader, listType);
 
-            InputStream responseStream = connection.getInputStream();
-            ObjectMapper mapper = new ObjectMapper();
-            Category[] categoryList1 = mapper.readValue(responseStream, Category[].class);
-            categoryList.addAll(Arrays.asList(categoryList1));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -187,30 +170,12 @@ public class DataHandler {
     public static void saveCategories(List list) {
         try {
 
-            URL url = new URL ("https://api.npoint.io/8b9137047c49d18ef89e");
-            HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+                objectMapper.writeValue(new File(String.valueOf(Paths.get(Config.getProperty("categoryJSON")))), list);
 
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("Content-Type", "application/json; utf-8");
-            connection.setRequestProperty("Accept", "application/json");
-            connection.setDoOutput(true);
-
-            String jsonInputString = new ObjectMapper().writeValueAsString(list.toArray());
-            jsonInputString = "[" + jsonInputString.substring(1, jsonInputString.length() - 1) + "]";
-
-
-            try(OutputStream os = connection.getOutputStream()) {
-                byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
-                os.write(input);
-            }
-
-            try(BufferedReader br = new BufferedReader(
-                    new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
-                StringBuilder response = new StringBuilder();
-                String responseLine = null;
-                while ((responseLine = br.readLine()) != null) {
-                    response.append(responseLine.trim());
-                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
         } catch (Exception e) {
@@ -279,16 +244,15 @@ public class DataHandler {
         List<Episode> episodeList = new ArrayList<>();
         try {
 
-            URL url = new URL("https://api.npoint.io/0100b0063de742dc840b");
+            Type listType = new TypeToken<List<Series>>() {
+            }.getType();
 
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            InputStream fis = new FileInputStream(Config.getProperty("episodeJSON"));
+            InputStreamReader isr = new InputStreamReader(fis, StandardCharsets.UTF_8);
+            Reader reader = new BufferedReader(isr);
 
-            connection.setRequestProperty("accept", "application/json");
+            episodeList = new Gson().fromJson(reader, listType);
 
-            InputStream responseStream = connection.getInputStream();
-            ObjectMapper mapper = new ObjectMapper();
-            Episode[] episodeList1 = mapper.readValue(responseStream, Episode[].class);
-            episodeList.addAll(Arrays.asList(episodeList1));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -305,32 +269,13 @@ public class DataHandler {
     public static void saveEpisodes(List list) {
         try {
 
-            URL url = new URL ("https://api.npoint.io/0100b0063de742dc840b");
-            HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+                objectMapper.writeValue(new File(String.valueOf(Paths.get(Config.getProperty("episodeJSON")))), list);
 
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("Content-Type", "application/json; utf-8");
-            connection.setRequestProperty("Accept", "application/json");
-            connection.setDoOutput(true);
-
-            String jsonInputString = new ObjectMapper().writeValueAsString(list.toArray());
-            jsonInputString = "[" + jsonInputString.substring(1, jsonInputString.length() - 1) + "]";
-
-
-            try(OutputStream os = connection.getOutputStream()) {
-                byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
-                os.write(input);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-
-            try(BufferedReader br = new BufferedReader(
-                    new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
-                StringBuilder response = new StringBuilder();
-                String responseLine = null;
-                while ((responseLine = br.readLine()) != null) {
-                    response.append(responseLine.trim());
-                }
-            }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
