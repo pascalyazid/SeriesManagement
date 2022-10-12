@@ -107,14 +107,14 @@ async function loadSeriesForm() {
         "                    <input type=\"text\" name=\"title\" id=\"title\" required>\n" +
         "                </div>\n" +
         "                <div class=\"mb-3\">\n" +
-        "                    <label for=\"category\">category</label>\n" +
+        "                    <label for=\"category\">Category</label>\n" +
         "                    <br>\n" +
-        "                    <select name=\"katUUID\" id=\"category\" class=\"select\" required></select>\n" +
+        "                    <select name=\"catUUID\" id=\"category\" class=\"select\" required></select>\n" +
         "                </div>\n" +
         "                <div class=\"mb-3\">\n" +
-        "                    <label for=\"erschDatum\">Erscheinungsdatum</label>\n" +
+        "                    <label for=\"releaseDate\">Release Date</label>\n" +
         "                    <br>\n" +
-        "                    <input type=\"date\" name=\"erschDatum\" id=\"erschDatum\" required>\n" +
+        "                    <input type=\"date\" name=\"releaseDate\" id=\"releaseDate\" required>\n" +
         "                </div>\n" +
         "                <div class=\"mb-3\">\n" +
         "                    <label for=\"desc\">Description</label>\n" +
@@ -127,22 +127,22 @@ async function loadSeriesForm() {
         "                    <input type=\"number\" name=\"episodeCount\" id=\"episodeCount\" min=\"1\" max=\"9999\" required>\n" +
         "                </div>\n" +
         "                <div class=\"mb-3\">\n" +
-        "                    <label for=\"imgURL\">Bild</label>\n" +
+        "                    <label for=\"imgURL\">Image</label>\n" +
         "                    <br>\n" +
         "                    <input type=\"text\" name=\"imgURL\" id=\"imgURL\">\n" +
         "                </div>\n" +
         "                <div class=\"mb-3\">\n" +
-        "                    <label for=\"rating\">rating</label>\n" +
+        "                    <label for=\"rating\">Rating</label>\n" +
         "                    <br>\n" +
         "                    <input type=\"number\" name=\"rating\" id=\"rating\" min=\"1\" max=\"10\">\n" +
         "                </div>\n" +
         "                <div class=\"mb-3\">\n" +
-        "                    <label>watched</label>\n" +
+        "                    <label>Watched</label>\n" +
         "                    <div>\n" +
-        "                        <label for=\"false\">Nein</label>\n" +
+        "                        <label for=\"false\">No</label>\n" +
         "                        <input type=\"radio\" id=\"false\" name=\"watched\" value=\"false\">\n" +
         "                        <br>\n" +
-        "                        <label for=\"true\">Ja</label>\n" +
+        "                        <label for=\"true\">Yes</label>\n" +
         "                        <input type=\"radio\" id=\"true\" name=\"watched\" value=\"true\">\n" +
         "                    </div>\n" +
         "                    <br>\n" +

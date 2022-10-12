@@ -9,12 +9,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.QueryParam;
 import java.io.IOException;
-import java.util.List;
-
 
 @RestController
 public class CategoryController {
@@ -24,8 +23,8 @@ public class CategoryController {
 
     @RequestMapping(value = "/category", method = RequestMethod.GET)
     public @ResponseBody ResponseEntity list(
-            @CookieValue(value = "userUUID", defaultValue = "userUUID") String userUUID) throws IOException {
-
+            HttpServletRequest request) throws IOException {
+        String userUUID = (String) request.getSession().getAttribute("userUUID");
         if (UserData.allowedUser(userUUID, 0)) {
             return new ResponseEntity<>(DataHandler.readCategories(), HttpStatus.OK);
         } else {
@@ -37,8 +36,8 @@ public class CategoryController {
     @RequestMapping(value = "/category/get", method = RequestMethod.GET)
     public @ResponseBody ResponseEntity get(
             @QueryParam("uuid") String uuid,
-            @CookieValue(value = "userUUID", defaultValue = "userUUID") String userUUID) throws IOException {
-
+            HttpServletRequest request) throws IOException {
+        String userUUID = (String) request.getSession().getAttribute("userUUID");
         if (UserData.allowedUser(userUUID, 0)) {
             if (DataHandler.existCategory(uuid)) {
                 return new ResponseEntity<>(DataHandler.getCategory(uuid), HttpStatus.OK);
@@ -52,9 +51,9 @@ public class CategoryController {
 
     @RequestMapping(value = "/category", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public @ResponseBody ResponseEntity create(
-            @CookieValue(value = "userUUID", defaultValue = "userUUID") String userUUID,
+            HttpServletRequest request,
             @Valid @BeanParam Category category) throws IOException {
-
+        String userUUID = (String) request.getSession().getAttribute("userUUID");
         if (UserData.allowedUser(userUUID, 1)) {
             if (DataHandler.newCategory(category)) {
                 return ResponseEntity.status(HttpStatus.OK).body("Category created");
@@ -68,10 +67,10 @@ public class CategoryController {
 
     @RequestMapping(value = "/category", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public @ResponseBody ResponseEntity update(
-            @CookieValue(value = "userUUID", defaultValue = "userUUID") String userUUID,
+            HttpServletRequest request,
             @Valid @BeanParam Category category,
             @QueryParam("uuid") String uuid) throws IOException {
-
+        String userUUID = (String) request.getSession().getAttribute("userUUID");
         if (UserData.allowedUser(userUUID, 1)) {
             if (DataHandler.existCategory(uuid)) {
                 DataHandler.removeCategory(uuid);
@@ -89,9 +88,9 @@ public class CategoryController {
 
     @RequestMapping(value = "/category", method = RequestMethod.DELETE)
     public @ResponseBody ResponseEntity delete(
-            @CookieValue(value = "userUUID", defaultValue = "userUUID") String userUUID,
+            HttpServletRequest request,
             @QueryParam("uuid") String uuid) throws IOException {
-
+        String userUUID = (String) request.getSession().getAttribute("userUUID");
         if (UserData.allowedUser(userUUID, 1)) {
             if (DataHandler.removeCategory(uuid)) {
                 return ResponseEntity.status(HttpStatus.OK).body("Category " + uuid + " deleted");

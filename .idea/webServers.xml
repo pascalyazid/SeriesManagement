@@ -3,9 +3,9 @@
   <component name="WebServers">
     <option name="servers">
       <webServer id="9ca291c3-97ad-4533-aa1f-087b1625fe39" name="Pascal Server" url="">
-        <fileTransfer rootFolder="/var/www/html" accessType="SFTP" host="pascalyazid.static-access.net" port="39596" sshConfigId="09d7da07-7a91-420c-bc2e-3798915125c9" sshConfig="pascalyazid@pascalyazid.static-access.net:39596 password">
+        <fileTransfer rootFolder="/var/WebApps" accessType="SFTP" host="192.168.0.228" port="22" sshConfigId="44b44dd4-baa3-48dd-8372-2dbd35d242a1" sshConfig="pascalyazid@192.168.0.228:22 password">
           <advancedOptions>
-            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>
         </fileTransfer>
       </webServer>

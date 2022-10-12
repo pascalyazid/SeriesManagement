@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.QueryParam;
@@ -22,7 +23,8 @@ public class EpisodeController {
 
     @RequestMapping(value = "/episode", method = RequestMethod.GET)
     public @ResponseBody ResponseEntity list(
-            @CookieValue(value = "userUUID", defaultValue = "userUUID") String userUUID) throws IOException {
+            HttpServletRequest request) throws IOException {
+        String userUUID = (String) request.getSession().getAttribute("userUUID");
         if (UserData.allowedUser(userUUID, 0)) {
             return new ResponseEntity<>(DataHandler.readEpisodes(), HttpStatus.OK);
         } else {
@@ -34,7 +36,8 @@ public class EpisodeController {
     @RequestMapping(value = "/episode/get", method = RequestMethod.GET)
     public @ResponseBody ResponseEntity get(
             @QueryParam("uuid") String uuid,
-            @CookieValue(value = "userUUID", defaultValue = "userUUID") String userUUID) throws IOException {
+            HttpServletRequest request) throws IOException {
+        String userUUID = (String) request.getSession().getAttribute("userUUID");
         if (UserData.allowedUser(userUUID, 0)) {
             if (DataHandler.existEpisode(uuid)) {
                 return new ResponseEntity<>(DataHandler.getEpisode(uuid), HttpStatus.OK);
@@ -48,14 +51,13 @@ public class EpisodeController {
 
     @RequestMapping(value = "/episode", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public @ResponseBody ResponseEntity create(
-            @CookieValue(value = "userUUID", defaultValue = "userUUID") String userUUID,
+            HttpServletRequest request,
             @Valid @BeanParam Episode episode) throws IOException {
-
+        String userUUID = (String) request.getSession().getAttribute("userUUID");
         if (UserData.allowedUser(userUUID, 1)) {
-            if(DataHandler.newEpisode(episode)) {
+            if (DataHandler.newEpisode(episode)) {
                 return ResponseEntity.status(HttpStatus.OK).body("Episode created");
-            }
-            else {
+            } else {
                 return ResponseEntity.status(HttpStatus.CONFLICT).body("Could not create Episode");
             }
         } else {
@@ -65,17 +67,16 @@ public class EpisodeController {
 
     @RequestMapping(value = "/episode", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public @ResponseBody ResponseEntity update(
-            @CookieValue(value = "userUUID", defaultValue = "userUUID") String userUUID,
+            HttpServletRequest request,
             @Valid @BeanParam Episode episode,
             @QueryParam("uuid") String uuid) throws IOException {
-
+        String userUUID = (String) request.getSession().getAttribute("userUUID");
         if (UserData.allowedUser(userUUID, 1)) {
             List<Episode> episodeList = DataHandler.readEpisodes();
-            if(DataHandler.existEpisode(uuid)) {
+            if (DataHandler.existEpisode(uuid)) {
                 episodeList.set(episodeList.indexOf(DataHandler.getEpisode(uuid)), episode);
                 return ResponseEntity.status(HttpStatus.OK).body("Episode " + uuid + " was updated");
-            }
-            else {
+            } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Episode " + uuid + " not found");
             }
         } else {
@@ -86,14 +87,13 @@ public class EpisodeController {
 
     @RequestMapping(value = "/episode", method = RequestMethod.DELETE)
     public @ResponseBody ResponseEntity delete(
-            @CookieValue("userUUID") String userUUID,
+            HttpServletRequest request,
             @QueryParam("uuid") String uuid) throws IOException {
-
+        String userUUID = (String) request.getSession().getAttribute("userUUID");
         if (UserData.allowedUser(userUUID, 1)) {
-            if(DataHandler.removeEpisode(uuid)) {
+            if (DataHandler.removeEpisode(uuid)) {
                 return ResponseEntity.status(HttpStatus.OK).body("Episode " + uuid + " deleted");
-            }
-            else {
+            } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Episode " + uuid + " not found");
             }
         } else {

@@ -10,12 +10,9 @@ import com.seriesmanagement.service.Config;
 
 import java.io.*;
 import java.lang.reflect.Type;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -148,7 +145,7 @@ public class DataHandler {
         List<Category> categoryList = new ArrayList<>();
         try {
 
-            Type listType = new TypeToken<List<Series>>() {
+            Type listType = new TypeToken<List<Category>>() {
             }.getType();
 
             InputStream fis = new FileInputStream(Config.getProperty("categoryJSON"));
@@ -244,7 +241,7 @@ public class DataHandler {
         List<Episode> episodeList = new ArrayList<>();
         try {
 
-            Type listType = new TypeToken<List<Series>>() {
+            Type listType = new TypeToken<List<Episode>>() {
             }.getType();
 
             InputStream fis = new FileInputStream(Config.getProperty("episodeJSON"));

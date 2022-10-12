@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="RemoteTargetsManager">
+    <targets>
+      <target name="pascalyazid@pascalyazid.static-access.net:39596" type="ssh/sftp" uuid="cbece165-24a1-47ec-bc26-84aab002ffae">
+        <config>
+          <option name="projectRootOnTarget" value="/var/deploy/SeriesManagement" />
+          <option name="serverName" value="pascalyazid@192.168.0.228:22 password" />
+        </config>
+        <ContributedStateBase type="JavaLanguageRuntime">
+          <config>
+            <option name="homePath" value="/usr/lib/jvm/default-java" />
+            <option name="javaVersionString" value="18.0.2-ea" />
+          </config>
+        </ContributedStateBase>
+      </target>
+    </targets>
+  </component>
+</project>

@@ -2,22 +2,34 @@ package com.seriesmanagement.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.validation.constraints.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Entity
 public class User {
 
+    @Id
     private String userUUID;
+
+    @NotEmpty
+    @Size(min = 3, max = 20)
     private String username;
+
+    @NotEmpty
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*]).{8,}$")
     private String password;
+
+    @NotEmpty
+    @ElementCollection
     private List<Boolean> roles;
 
-    //private String email;
 
-    //private String auth;
-
-    public User(String username, String password, boolean read, boolean write, boolean edit) {
+    public User(String username, String password, boolean read, boolean write, boolean edit, boolean admin) {
         this.userUUID = UUID.randomUUID().toString();
         this.username = username;
         this.password = password;
@@ -25,6 +37,9 @@ public class User {
         this.roles.add(read);
         this.roles.add(write);
         this.roles.add(edit);
+        this.roles.add(admin);
+
+
     }
 
     public User() {

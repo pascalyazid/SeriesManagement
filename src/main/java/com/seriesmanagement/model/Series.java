@@ -1,14 +1,15 @@
 package com.seriesmanagement.model;
 
+
 import com.seriesmanagement.util.ImgURL;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
-import javax.ws.rs.FormParam;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
 
 @Entity
 public class Series {
@@ -26,7 +27,9 @@ public class Series {
 
     @NotEmpty
     @Size(min = 2, max = 40)
+    @Pattern(regexp = "^[a-zA-Z0-9_ ]*$")
     private String title;
+
 
 
     @NotEmpty
@@ -36,6 +39,7 @@ public class Series {
 
     @NotEmpty
     @Size(min = 2, max = 500, message = "The description must contain between {min} and {max} characters")
+    @Pattern(regexp = "^[a-zA-Z0-9_ ]*$")
     private String desc;
 
 
@@ -45,14 +49,15 @@ public class Series {
     private int episodeCount;
 
 
-    @ImgURL
+    //@ImgURL
+    @Pattern(regexp = "[^\\s]+(\\.(?i)(jpg|png|bmp))$")
     private String imgURL;
 
     // TODO: 6/14/2022 Custom Validation Constraint
 
     @NotNull
-    @Min(1)
-    @Max(10)
+    @Min(value = 1)
+    @Max(value = 10)
     private int rating;
 
 
@@ -101,9 +106,7 @@ public class Series {
         return rating;
     }
 
-    public String getCatUUID() {
-        return catUUID;
-    }
+    public String getCatUUID() {return catUUID;}
 
     public boolean isWatched() {
         return watched;

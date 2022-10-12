@@ -3,7 +3,6 @@ package com.seriesmanagement.service;
 import com.seriesmanagement.SeriesManagementApplication;
 
 import javax.ws.rs.core.Application;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,7 +12,7 @@ import java.util.Set;
 
 public class Config extends Application {
 
-    private static final String PROPERTIES_PATH = "/var/www/html/json/seriesmanagement/seriesmanagement.properties";
+    private static final String PROPERTIES_PATH = "/var/json/seriesmanagement/seriesmanagement.properties";
     private static Properties properties = null;
 
     /**

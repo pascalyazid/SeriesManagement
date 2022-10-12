@@ -1,18 +1,21 @@
 package com.seriesmanagement.data;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.seriesmanagement.model.Series;
 import com.seriesmanagement.model.User;
+import com.seriesmanagement.service.Config;
 
 import java.io.*;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
- * data handler for reading and writing the users
- * <p>
- * Serienliste
+ * DataHandler for reading and writing the users
  *
  * @author Pascal Thuma
  */
@@ -31,64 +34,63 @@ public class UserData {
     }
 
     /**
-     * Funktion überprüft ob ein User mit gegebenem Nutzernamen und Passwort existiert
+     * Create a new User
      *
+     * @param user
+     */
+    public static void addUser(User user) {
+        List<User> userList = readUsers();
+        userList.add(user);
+        saveUsers(userList);
+    }
+
+    /**
+     * Checks if a user with the given username already exists
      * @param username
-     * @param password
      * @return
      */
-    public static User findUser(String username, String password) {
-        User user = new User();
-        List<User> userList = readUsers();
+    public static boolean existUser(String username) {
+        return readUsers().stream().anyMatch(user -> user.getUsername().equals(username));
+    }
 
-        for (User entry : userList) {
-            if (entry.getUsername().equals(username) &&
-                    entry.getPassword().equals(password)) {
-                user = entry;
-                break;
-            } else {
-                user.setUsername(null);
-                user.setPassword(null);
-            }
-        }
-        return user;
+    public static boolean login(String username, String passwd) {
+        return readUsers().stream().anyMatch(user -> user.getUsername().equals(username) && user.getPassword().equals(passwd));
     }
 
     /**
-     * Funktion um einen neuen Nutzer zu erstellen
-     *
-     * @param username
-     * @param password
-     */
-    public static void addUSer(String username, String password, boolean read, boolean write, boolean edit) {
-        User user = new User(username, password, read, write, edit);
-        users.add(user);
-    }
-
-    /**
-     * Liest alle User aus dem JSON-File und gibt sie als Liste zurück
+     * Reads all users from the json file
      *
      * @return
      */
     public static List<User> readUsers() {
-        List<User> users = new ArrayList<>();
+        List<User> userList = new ArrayList<>();
         try {
 
-            URL url = new URL("https://api.npoint.io/5e1de3694aacc4d38ae4");
 
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            Type listType = new TypeToken<List<User>>() {
+            }.getType();
 
-            connection.setRequestProperty("accept", "application/json");
+            InputStream fis = new FileInputStream(Config.getProperty("userJSON"));
+            InputStreamReader isr = new InputStreamReader(fis, StandardCharsets.UTF_8);
+            Reader reader = new BufferedReader(isr);
 
-            InputStream responseStream = connection.getInputStream();
-            ObjectMapper mapper = new ObjectMapper();
-            User[] users1 = mapper.readValue(responseStream, User[].class);
-            users.addAll(Arrays.asList(users1));
+            userList = new Gson().fromJson(reader, listType);
+
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return users;
+        return userList;
+    }
+
+    /**
+     * Read a User
+     *
+     * @param username
+     * @return
+     */
+    public static User getUser(String username) {
+        return readUsers().stream().filter(user -> user.getUsername().equals(username)).findFirst().orElse(null);
     }
 
     /**

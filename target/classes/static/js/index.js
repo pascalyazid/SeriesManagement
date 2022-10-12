@@ -1,7 +1,6 @@
 $(document).ready(function () {
     loadNav();
     //isLoggedInI();
-    //listSerien();
 });
 /**
  * Loads the Navbar
@@ -18,20 +17,20 @@ function loadNav() {
         "            <ul class=\"navbar-nav\">\n" +
         "              <li class=\"nav-item dropdown\">\n" +
         "                <a class=\"nav-link dropdown-toggle\" href=\"#\" id=\"navbarDropdownMenuLink\" role=\"button\" data-bs-toggle=\"dropdown\" aria-expanded=\"false\">\n" +
-        "                  Kategorien\n" +
+        "                  Categories\n" +
         "                </a>\n" +
         "                <ul class=\"dropdown-menu\" aria-labelledby=\"navbarDropdownMenuLink\">\n" +
-        "                  <li><a class=\"dropdown-item\" href=\"javascript:loadCategoryForm()\">Kategorie erstellen</a></li>\n" +
-        "                  <li><a class=\"dropdown-item\" href=\"javascript:listCategories()\">Alle Kategorien</a></li>\n" +
+        "                  <li><a class=\"dropdown-item\" href=\"javascript:loadCategoryForm()\">Create Category</a></li>\n" +
+        "                  <li><a class=\"dropdown-item\" href=\"javascript:listCategories()\">All Categories</a></li>\n" +
         "                </ul>\n" +
         "              </li>\n" +
         "              <li class=\"nav-item dropdown\">\n" +
         "                <a class=\"nav-link dropdown-toggle\" href=\"#\" id=\"navbarDropdownMenuLink\" role=\"button\" data-bs-toggle=\"dropdown\" aria-expanded=\"false\">\n" +
-        "                  Serien\n" +
+        "                  Series\n" +
         "                </a>\n" +
         "                <ul class=\"dropdown-menu\" aria-labelledby=\"navbarDropdownMenuLink\">\n" +
-        "                  <li><a class=\"dropdown-item\" href=\"javascript:loadSeriesForm()\">Serie erstellen</a></li>\n" +
-        "                  <li><a class=\"dropdown-item\" href=\"javascript:listSeries()\">Alle Serien</a></li>\n" +
+        "                  <li><a class=\"dropdown-item\" href=\"javascript:loadSeriesForm()\">Create Series</a></li>\n" +
+        "                  <li><a class=\"dropdown-item\" href=\"javascript:listSeries()\">All Series</a></li>\n" +
         "                </ul>\n" +
         "              </li>\n" +
         "              <li class=\"nav-item dropdown\">\n" +
@@ -40,7 +39,7 @@ function loadNav() {
         "                </a>\n" +
         "                <ul class=\"dropdown-menu\" aria-labelledby=\"navbarDropdownMenuLink\">\n" +
         "                  <li><a class=\"dropdown-item\" href=\"#\">Mein Account</a></li>\n" +
-        "                  <li><a class=\"dropdown-item\" href=\"javascript:sendLogout()\">Abmelden</a></li>\n" +
+        "                  <li><a class=\"dropdown-item\" href=\"javascript:sendLogout()\">Sign Out</a></li>\n" +
         "                </ul>\n" +
         "              </li>\n" +
         "            </ul>\n" +
@@ -48,4 +47,26 @@ function loadNav() {
         "        </div>\n" +
         "      </nav>"
 
+}
+
+/**
+ * Checks if the user is logged in, if no -> login.html
+ */
+function isLoggedInI() {
+    $
+        .ajax({
+            url: "/SeriesManagement/user/loggedIn",
+            type: "GET",
+            dataType: "json",
+        })
+        .done(function () {
+            window.location.href = "./index.html";
+        })
+        .fail(function (xhr, status, errorThrown){
+            if(xhr.status == 401) {
+                window.location.href = "login.html";
+            } else{
+                console.log("An Error Occurred")
+            }
+        })
 }

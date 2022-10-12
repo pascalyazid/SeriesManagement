@@ -2,19 +2,17 @@ package com.seriesmanagement.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
+import javax.sound.midi.MidiChannel;
+import javax.validation.constraints.*;
 import javax.ws.rs.FormParam;
 import java.lang.reflect.Method;
 import java.util.UUID;
 
 @Entity
 public class Category {
-    @FormParam("title")
     @NotEmpty
-    @Min(2)
-    @Max(500)
+    @Size(min = 2, max = 40)
+    @Pattern(regexp = "^[a-zA-Z0-9_ ]*$")
     private String title;
 
     @Id
