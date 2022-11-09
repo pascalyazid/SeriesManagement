@@ -5,7 +5,7 @@ If you want to use your own json files, you have to configure the "PROPERTIES_PA
 
 The path to a json file should look like: seriesJSON=\path\to\json\file.json
 
-https://pascalyazid.com/SeriesManagement
+http://pascalyazid.com:8080/SeriesManagement/
 
 Login Credentials:
 username: guest
